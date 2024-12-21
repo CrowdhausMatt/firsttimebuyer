@@ -1,3 +1,5 @@
+// main.js
+
 class MyGame extends Phaser.Scene {
     constructor() {
         super('gameScene');
@@ -23,9 +25,15 @@ class MyGame extends Phaser.Scene {
     }
 
     create() {
-        // Game dimensions handled by Scale Manager for full-screen
+        // Game dimensions handled by Scale Manager for fixed size
         this.gameWidth = this.scale.width;
         this.gameHeight = this.scale.height;
+
+        // ----------- Add Border Around the Game -----------
+        const border = this.add.graphics();
+        border.lineStyle(4, 0x000000, 1); // Black border with 4px thickness
+        border.strokeRect(0, 0, this.gameWidth, this.gameHeight);
+        border.setDepth(10); // Ensure the border is above all other elements
 
         // Game state variables
         this.attempts = 0;
@@ -342,19 +350,24 @@ class MyGame extends Phaser.Scene {
             this.logo.setPosition(this.gameWidth - 50, 50); // Adjust as needed
         }
 
-        // Reposition other elements if necessary
-        // For example, adjust the brick wall, floor, etc., if they rely on gameWidth/gameHeight
+        // Update the border to match new dimensions
+        this.children.getByName('border').destroy(); // Remove existing border
+
+        const border = this.add.graphics();
+        border.lineStyle(4, 0x000000, 1); // Black border with 4px thickness
+        border.strokeRect(0, 0, this.gameWidth, this.gameHeight);
+        border.setDepth(10); // Ensure the border is above all other elements
     }
 }
 
 const config = {
     type: Phaser.AUTO,
-    width: 800, // Initial width, handled by Scale Manager
-    height: 600, // Initial height, handled by Scale Manager
+    width: 800, // Fixed width
+    height: 600, // Fixed height
     backgroundColor: '#87ceeb',
     parent: 'gameContainer',
     scale: {
-        mode: Phaser.Scale.RESIZE, // Make the game resize to fit the window
+        mode: Phaser.Scale.NONE, // Fixed size, no resizing
         autoCenter: Phaser.Scale.CENTER_BOTH // Center the game horizontally and vertically
     },
     physics: {
