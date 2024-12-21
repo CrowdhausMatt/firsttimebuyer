@@ -33,6 +33,7 @@ class MyGame extends Phaser.Scene {
         const border = this.add.graphics();
         border.lineStyle(4, 0x000000, 1); // Black border with 4px thickness
         border.strokeRect(0, 0, this.gameWidth, this.gameHeight);
+        border.setName('border'); // Assign a name for future reference
         border.setDepth(10); // Ensure the border is above all other elements
 
         // Game state variables
@@ -351,11 +352,17 @@ class MyGame extends Phaser.Scene {
         }
 
         // Update the border to match new dimensions
-        this.children.getByName('border').destroy(); // Remove existing border
+        // Remove existing border
+        const existingBorder = this.children.getByName('border');
+        if (existingBorder) {
+            existingBorder.destroy();
+        }
 
+        // Add new border
         const border = this.add.graphics();
         border.lineStyle(4, 0x000000, 1); // Black border with 4px thickness
         border.strokeRect(0, 0, this.gameWidth, this.gameHeight);
+        border.setName('border'); // Assign name for future reference
         border.setDepth(10); // Ensure the border is above all other elements
     }
 }
